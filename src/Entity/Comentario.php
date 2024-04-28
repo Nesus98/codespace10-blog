@@ -31,6 +31,12 @@ class Comentario
     #[ORM\JoinColumn(nullable: false)]
     private ?Usuario $usuario = null;
 
+
+    public function __toString()
+    {
+        return $this->fecha->format('d/m/Y H:is') . ' - ' . $this->entrada->getTitulo();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

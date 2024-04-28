@@ -56,6 +56,10 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         $this->entradas = new ArrayCollection();
         $this->comentarios = new ArrayCollection();
     }
+    public function __toString()
+    {
+        return $this->nombre;
+    }
 
     public function getId(): ?int
     {

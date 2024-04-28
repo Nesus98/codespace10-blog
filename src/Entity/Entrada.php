@@ -63,6 +63,11 @@ class Entrada
         $this->comentarios = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->titulo;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
