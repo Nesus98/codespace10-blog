@@ -21,6 +21,34 @@ class EntradaRepository extends ServiceEntityRepository
         parent::__construct($registry, Entrada::class);
     }
 
+    public function getQueryByFilter($filter)
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->where('e.estado = 1');
+            if(isset($filter['categoria'])){
+                $qb->andWhere('e.categoria = :categoria');
+                $qb->setParameter('categoria', $filter['categoria']);
+            }
+            if(isset($filter['usuario'])) {
+                $qb->join('e.usuario', 'u');
+                $qb->andWhere('u.email = :usuario');
+                $qb->setParameter('usuario', $filter['usuario']);
+            }
+            if(isset($filter['espacio'])) {
+                $qb->join('e.categoria', 'c');
+                $qb->andWhere('c.espacio = :espacio');
+                $qb->setParameter('espacio', $filter['espacio']);
+            }
+            if(isset($filter['fechadesde'])) {
+                $qb->andWhere('e.fecha >= :fechamin');
+                $qb->setParameter('fechamin', $filter['fechadesde']. ' 00:00:00');
+            }
+            if(isset($filter['fechahasta'])) {
+                $qb->andWhere('e.fecha <= :fechamax');
+                $qb->setParameter('fechamax', $filter['fechahasta'] . ' 23:59:59');
+            }
+        return $qb->getQuery();
+    }
     //    /**
     //     * @return Entrada[] Returns an array of Entrada objects
     //     */
